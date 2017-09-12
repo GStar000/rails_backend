@@ -1,0 +1,41 @@
+<% content_for :page_title do %>
+  <%= link_to Spree.t(:product_variant_types), spree.admin_product_product_variant_types_url %> /
+  <%= @product_variant_type.name %>
+<% end %>
+
+<%= render partial: 'spree/admin/shared/error_messages', locals: { target: @product_variant_type } %>
+
+<%= form_for ([:admin, @product, @product_variant_type]) do |f| %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h1 class="panel-title">
+        <%= Spree.t(:product_variant_values) %>
+      </h1>
+    </div>
+    <div class="panel-body">
+      <%= render partial: 'form', locals: { f: f } %>
+    </div>
+    <table class="table table-condensed table-bordered sortable" >
+      <thead data-hook="variant_value_header">
+        <tr>
+          <th colspan="1"><%= Spree.t(:name) %> <span class="required">*</span></th>
+          <th><%= Spree.t(:presentation) %> <span class="required">*</span></th>
+          <th><%= Spree.t(:price) %> <span class="required">*</span></th>
+        </tr>
+      </thead>
+      <tbody id="variant_values">
+          <% if @product_variant_type.product_variant_values.empty? %>
+
+          <% else %>
+            <%= f.fields_for :product_variant_values do |variant_value_form| %>
+              <%= render partial: 'variant_value_fields', locals: { f: variant_value_form } %>
+            <% end %>
+          <% end %>
+      </tbody>
+    </table>
+    <div class="panel-footer text-center">
+        <%= render partial: 'spree/admin/shared/edit_resource_links' %>
+    </div>
+  </div>
+<% end %>
+      

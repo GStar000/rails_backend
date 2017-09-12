@@ -1,0 +1,33 @@
+<% content_for :page_title do %>
+  <%= Spree.t(:order_info_options) %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <%= button_link_to Spree.t(:new_order_info_option), new_object_url, { class: "btn-success", icon: 'add', id: 'admin_new_order_info_option' } %>
+<% end if can?(:create, Spree::OrderInfoOption) %>
+
+<table class="table" id="listing_products">
+  <thead>
+    <tr data-hook="admin_products_index_headers">
+        <th colspan="2"><%= Spree.t(:name) %></th>
+        <th><%= Spree.t(:presentation) %></th>   
+        <th><%= Spree.t(:description) %></th>
+        <th data-hook="admin_order_info_options_index_header_actions" class="actions"></th>
+      </tr>
+  </thead>
+  <tbody>
+    <% @order_info_options.each do |order_info_option| %>
+      <tr id="<%= spree_dom_id order_info_option %>" data-hook="admin_order_info_options_index_rows" class="<%= cycle('odd', 'even') %>">
+        <td colspan="2"><%= order_info_option.name %></td>
+        <td><%= order_info_option.presentation %></td>
+        <td><%= order_info_option.description %></td>
+
+        <td class="actions actions-3 text-right" data-hook="admin_order_info_options_index_row_actions">
+          <%= link_to_edit order_info_option, no_text: true, class: 'edit' if can?(:edit, order_info_option) %>
+          <%= link_to_delete order_info_option, no_text: true if can?(:delete, order_info_option) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
